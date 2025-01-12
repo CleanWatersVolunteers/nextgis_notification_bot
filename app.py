@@ -20,9 +20,9 @@ with open("__token_map_to_telegram_bot.txt", "r") as f:
     TELEGRAM_BOT_TOKEN = f.read()
 
 with open("__token_for_map.txt", "r") as f:
-    u = f.readline()
+    u = f.readline()[:-1]
     p = f.readline()
-    auth = [u, p]
+    auth = (u, p)
 
 
 # bs_monitoring_map_to_tg_bot

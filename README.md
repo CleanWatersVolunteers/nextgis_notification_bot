@@ -1,2 +1,3 @@
 # nextgis_notification_bot
-Simple bot that nostfies when new feature is created on bird map
+Бот, который отправляет сообщение в специальную закрытую групу, если в таблице карты появляется новый объект.
+Изменения текущих объектов не отслеживаются.

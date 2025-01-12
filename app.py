@@ -59,8 +59,8 @@ def prepare_records(records):
     for r in records:
         if r["properties"]["status_photo"] != None:
             message = message_template_photo
-#        else: 
-#            message = message_template_no_photo
+        else: 
+            message = message_template_no_photo
             m = message.format(id = r["id"], comment = r["properties"]["comment"],
                                     dt_auto = r["properties"]["dt_auto"],
                                     lat = r["properties"]["lat"],

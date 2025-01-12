@@ -86,6 +86,7 @@ async def main() -> None:
         for r in prepared_rec_list:
             await application.bot.send_message(forward_group, r)
             new_rec_manager.update_current_record_id()
+            await asyncio.sleep(1) 
         await asyncio.sleep(10)        
     await application.updater.stop()
     print("[OK] Bot disabled")

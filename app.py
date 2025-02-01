@@ -6,8 +6,10 @@ from telegram.ext import Application, CallbackQueryHandler, CommandHandler, Mess
 from telegram import Update
 import requests
 import json
-
+from datetime import datetime
 from new_rec_manager import new_rec_manager
+
+# sudo supervisorctl start nextgis_notification_bot_testing
 
 ngw_host = 'https://blacksea-monitoring.nextgis.com'
 auth = None
@@ -38,7 +40,7 @@ def get_records():
 
 
 message_template_photo = """\
-[#{id}] {dt_auto} Мск
+[#{id}] {dt_auto} Мск. @Mira113_shtab
 {comment}
 {lat}, {lon}
 <a href='https://seagull.nextgis.dev/?zoom=15&center={lon}_{lat}&select=100-{id}&layers=114%2C230%2C101&s%5B101%5D=0%2C1%2C2'>Объект</a> и <a href='https://blacksea-monitoring.nextgis.com/resource/197/display?panel=identify'>таблица объектов</a>.
@@ -73,7 +75,7 @@ async def main() -> None:
         records = get_records()
         rec_list = new_rec_manager.get_new_features(records)
         prepared_rec_list = prepare_records(rec_list)
-        print(f"Scanned. Found {len(prepared_rec_list)} new. Forwarding..")
+        print(f"{datetime.now()} Scanned. Found {len(prepared_rec_list)} new. Forwarding..")
         for r in prepared_rec_list:
             await application.bot.send_message(forward_group, r, parse_mode=constants.ParseMode.HTML)
             new_rec_manager.update_current_record_id()

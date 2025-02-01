@@ -38,10 +38,12 @@ def get_records():
 
 
 message_template_photo = """\
-[#{id}] {dt_auto} 
+[#{id}] {dt_auto} Мск
 {comment}
 {lat}, {lon}
 <a href='https://seagull.nextgis.dev/?zoom=15&center={lon}_{lat}&select=100-{id}&layers=114%2C230%2C101&s%5B101%5D=0%2C1%2C2'>Объхект</a> и <a href='https://blacksea-monitoring.nextgis.com/resource/197/display?panel=identify'>таблица объектов</a>.
+
+Взяли в работу – ставьте ❤️
 """
 
 def prepare_records(records):
@@ -51,7 +53,7 @@ def prepare_records(records):
             continue
         message = message_template_photo
         m = message.format(id = r["id"], comment = r["properties"]["comment"],
-                                dt_auto = r["properties"]["dt_auto"],
+                                dt_auto = ":".join(r["properties"]["dt_auto"].split(":")[:1]),
                                 lat = r["properties"]["lat"],
                                 lon = r["properties"]["lon"],
                                 status_us = r["properties"]["status_us"],

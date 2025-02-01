@@ -1,7 +1,7 @@
 
 import asyncio
 import json
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram import constants
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, MessageHandler, ContextTypes, filters
 from telegram import Update
 import requests
@@ -41,26 +41,15 @@ message_template_photo = """\
 [#{id}] {dt_auto} 
 {comment}
 {lat}, {lon}
-Фото: https://blacksea-monitoring.nextgis.com/resource/100/feature/{id}
-Карта:https://seagull.nextgis.dev/?zoom=15&center={lon}_{lat}&select=100-{id}
-Табл: https://blacksea-monitoring.nextgis.com/resource/197/display?panel=identify
-@annomaly, @ksu_hidden, @semendogadin2 Message from bot.
-"""
-message_template_no_photo = """\
-[#{id}] {dt_auto} 
-{comment}
-{lat}, {lon}
-Карта:https://seagull.nextgis.dev/?zoom=15&center={lon}_{lat}&select=100-{id}
-Табл: https://blacksea-monitoring.nextgis.com/resource/197/display?panel=identify
+<a href='https://seagull.nextgis.dev/?zoom=15&center={lon}_{lat}&select=100-{id}&layers=114%2C230%2C101&s%5B101%5D=0%2C1%2C2'>Объхект</a> и <a href='https://blacksea-monitoring.nextgis.com/resource/197/display?panel=identify'>таблица объектов</a>.
 """
 
 def prepare_records(records):
     ret = []
     for r in records:
-        if r["properties"]["status_photo"] != None:
-            message = message_template_photo
-        else: 
-            message = message_template_no_photo
+        if r["properties"]["status_photo"] is None:
+            continue
+        message = message_template_photo
         m = message.format(id = r["id"], comment = r["properties"]["comment"],
                                 dt_auto = r["properties"]["dt_auto"],
                                 lat = r["properties"]["lat"],
@@ -84,7 +73,7 @@ async def main() -> None:
         prepared_rec_list = prepare_records(rec_list)
         print(f"Scanned. Found {len(prepared_rec_list)} new. Forwarding..")
         for r in prepared_rec_list:
-            await application.bot.send_message(forward_group, r)
+            await application.bot.send_message(forward_group, r, parse_mode=constants.ParseMode.HTML)
             new_rec_manager.update_current_record_id()
             await asyncio.sleep(1) 
         await asyncio.sleep(10)        

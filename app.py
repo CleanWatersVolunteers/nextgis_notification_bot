@@ -61,13 +61,13 @@ def prepare_records(records):
             message = message_template_photo
         else: 
             message = message_template_no_photo
-            m = message.format(id = r["id"], comment = r["properties"]["comment"],
-                                    dt_auto = r["properties"]["dt_auto"],
-                                    lat = r["properties"]["lat"],
-                                    lon = r["properties"]["lon"],
-                                    status_us = r["properties"]["status_us"],
-                                    )
-            ret.append(m)
+        m = message.format(id = r["id"], comment = r["properties"]["comment"],
+                                dt_auto = r["properties"]["dt_auto"],
+                                lat = r["properties"]["lat"],
+                                lon = r["properties"]["lon"],
+                                status_us = r["properties"]["status_us"],
+                                )
+        ret.append(m)
     return ret
 
 async def main() -> None:
